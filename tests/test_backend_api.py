@@ -24,6 +24,14 @@ def test_signup_succeeds_for_existing_activity(client):
     assert payload["message"] == f"Signed up {email} for Chess Club"
 
 
+def test_signup_returns_400_for_duplicate_signup(client):
+    email = "michael@mergington.edu"
+    response = client.post(f"/activities/Chess%20Club/signup?email={email}")
+    payload = response.json()
+
+    assert response.status_code == 400
+    assert payload["detail"] == "Student already signed up for this activity"
+
 def test_signup_returns_404_for_unknown_activity(client):
     email = "new-student@mergington.edu"
     response = client.post(f"/activities/Unknown%20Club/signup?email={email}")
