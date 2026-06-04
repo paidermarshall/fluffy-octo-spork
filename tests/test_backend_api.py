@@ -57,3 +57,12 @@ def test_unregister_returns_404_for_missing_participant(client):
 
     assert response.status_code == 404
     assert payload["detail"] == "Participant not found in activity"
+
+
+def test_unregister_returns_404_for_unknown_activity(client):
+    email = "michael@mergington.edu"
+    response = client.delete(f"/activities/Unknown%20Club/participants?email={email}")
+    payload = response.json()
+
+    assert response.status_code == 404
+    assert payload["detail"] == "Activity not found"
